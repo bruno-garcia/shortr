@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 
-namespace Redirectr.Web
+namespace Redirectr
 {
     internal static class ConfigurationExtension
     {

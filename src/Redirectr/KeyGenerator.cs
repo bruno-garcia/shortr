@@ -2,9 +2,10 @@ using System;
 using System.Buffers;
 using System.Security.Cryptography;
 
-namespace Redirectr.Web
+namespace Redirectr
 {
-    public class KeyGenerator : IDisposable
+    // TODO: extract interface to allow user defined implementation registering in DI
+    internal class KeyGenerator : IDisposable
     {
         private readonly RandomNumberGenerator _randomNumberGenerator;
         private const string Characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

@@ -1,0 +1,22 @@
+env:
+  global:
+    - DOTNET_CLI_TELEMETRY_OPTOUT=1
+    - AndroidSdkDirectory=../../android-sdk/android-sdk-macosx
+branches:
+  only:
+    - master
+    - /^release\/.*$/
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode11.2
+    - os: linux
+      dist: bionic
+script:
+  - curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version 3.1.100
+  - export PATH=$PATH:~/.dotnet
+  - ./build.sh
+after_success:
+  - curl -s https://codecov.io/bash > codecov
+  - chmod +x codecov
+  - ./codecov -f "*cobertura.xml"

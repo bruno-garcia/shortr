@@ -8,6 +8,8 @@ namespace Shortr
     {
         private readonly ShortrOptions _options;
         private readonly Regex _whiteListCharactersRegex;
+        private string _baseShortenUrl;
+        private string _baseShortUrl;
 
         public UrlValidation(ShortrOptions options)
         {
@@ -20,6 +22,8 @@ namespace Shortr
             }
 
             _whiteListCharactersRegex = new Regex(options.RegexUrlCharacterWhiteList, RegexOptions.Compiled);
+            _baseShortenUrl = new Uri(_options.BaseAddress, _options.ShortenUrlPath).AbsoluteUri;
+            _baseShortUrl = new Uri(_options.BaseAddress, _options.ShortUrlPath).AbsoluteUri;
         }
 
         public bool IsValidUrl(string targetUrl)
@@ -42,18 +46,25 @@ namespace Shortr
                     return false;
                 }
 
-                // Can't create a short link to a short link
-                if (uri.AbsoluteUri.StartsWith(_options.BaseAddress.AbsoluteUri,StringComparison.InvariantCultureIgnoreCase))
+                // Unless whitelisted, can't create a short link to a shorten URL request link
+                if (uri.AbsoluteUri.StartsWith(_baseShortenUrl, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return false;
                 }
 
+                // Unless whitelisted, can't create a short link to a short link
+                if (uri.AbsoluteUri.StartsWith(_baseShortUrl, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return false;
+                }
+
+                // If it's whitelisted, it's set.
                 if (_options.DestinationWhiteListedBaseAddresses is {} whiteList)
                 {
                     return whiteList.Any(u => u.IsBaseOf(uri));
                 }
 
-                // No domain to match
+                // No domain to match, allow redirect to any location
                 return true;
             }
             catch

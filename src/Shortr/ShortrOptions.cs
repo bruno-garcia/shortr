@@ -44,6 +44,11 @@ namespace Shortr
         public Uri? ShortUrlPath { get; set; } = new Uri("s/", UriKind.Relative);
 
         /// <summary>
+        /// Whether to allow redirection to any URL
+        /// </summary>
+        public bool AllowRedirectToAnyDomain { get; set; }
+
+        /// <summary>
         /// Used to compare against destination URLs
         /// </summary>
         /// <example>
@@ -65,6 +70,6 @@ namespace Shortr
         /// <remarks>
         /// This allows the creation of links that expire.
         /// </remarks>
-        public bool AllowDomainTtl { get; set; } = false;
+        public bool AllowDomainTtl { get; set; }
     }
 }

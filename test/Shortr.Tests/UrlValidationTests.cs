@@ -67,21 +67,44 @@ namespace Shortr.Tests
         }
 
         [Fact]
-        public void IsValidUrl_SameAsBaseAddress_IsNotValid()
+        public void IsValidUrl_SameAsBaseAddress_IsValid()
         {
+            // Matches other locations in the same URL, except the short/shorten
             var url = new Uri("http://localhost:1324");
             _fixture.Options.BaseAddress = url;
             var sut = _fixture.GetSut();
-            Assert.False(sut.IsValidUrl(url.AbsoluteUri));
+            Assert.True(sut.IsValidUrl(url.AbsoluteUri));
         }
 
         [Fact]
-        public void IsValidUrl_SameAsBaseAddressWithPath_IsNotValid()
+        public void IsValidUrl_SameAsBaseAddressWithPath_IsValid()
         {
             var url = new Uri("http://localhost:1324");
             _fixture.Options.BaseAddress = url;
             var sut = _fixture.GetSut();
-            Assert.False(sut.IsValidUrl(new Uri(url, "something/else/").AbsoluteUri));
+            Assert.True(sut.IsValidUrl(new Uri(url, "something/else/").AbsoluteUri));
+        }
+
+        [Fact]
+        public void IsValidUrl_SameAsBaseAddressWithPathSameAsShorten_IsNotValid()
+        {
+            var url = new Uri("http://localhost:1324");
+            _fixture.Options.BaseAddress = url;
+            var sut = _fixture.GetSut();
+            Assert.False(sut.IsValidUrl(new Uri(
+                url,
+                _fixture.Options.ShortenUrlPath).AbsoluteUri));
+        }
+
+        [Fact]
+        public void IsValidUrl_SameAsBaseAddressWithPathSameAsShort_IsNotValid()
+        {
+            var url = new Uri("http://localhost:1324");
+            _fixture.Options.BaseAddress = url;
+            var sut = _fixture.GetSut();
+            Assert.False(sut.IsValidUrl(new Uri(
+                url,
+                _fixture.Options.ShortUrlPath!).AbsoluteUri));
         }
 
         [Fact]
@@ -99,7 +122,9 @@ namespace Shortr.Tests
         [InlineData(true, "http://localhost/", "http://a.io/something/#else", "http://a.io", "http://localhost:5000")]
         [InlineData(true, "http://localhost/", "http://a/b/c", "http://a", "http://b")]
         [InlineData(true, "http://localhost/", "http://a/b/c", "http://a")]
-        [InlineData(false, "http://a", "http://a", "http://a")]
+        [InlineData(true, "http://a", "http://a", "http://a")]
+        [InlineData(false, "http://a", "http://a/shorten/?url=http://a", "http://a")]
+        [InlineData(false, "http://a", "http://a/s/?url=http://a", "http://a")]
         [InlineData(false, "http://a", "http://b", "http://c")]
         [InlineData(false, "https://a", "https://b", "https://c")]
         [InlineData(false, "https://a", "http://b/c?d=e", "https://c")]

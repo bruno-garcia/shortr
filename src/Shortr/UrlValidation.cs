@@ -8,8 +8,8 @@ namespace Shortr
     {
         private readonly ShortrOptions _options;
         private readonly Regex _whiteListCharactersRegex;
-        private string _baseShortenUrl;
-        private string _baseShortUrl;
+        private readonly Uri _baseShortenUrl;
+        private readonly Uri _baseShortUrl;
 
         public UrlValidation(ShortrOptions options)
         {
@@ -22,8 +22,8 @@ namespace Shortr
             }
 
             _whiteListCharactersRegex = new Regex(options.RegexUrlCharacterWhiteList, RegexOptions.Compiled);
-            _baseShortenUrl = new Uri(_options.BaseAddress, _options.ShortenUrlPath).AbsoluteUri;
-            _baseShortUrl = new Uri(_options.BaseAddress, _options.ShortUrlPath).AbsoluteUri;
+            _baseShortenUrl = new Uri(_options.BaseAddress, _options.ShortenUrlPath);
+            _baseShortUrl = new Uri(_options.BaseAddress, _options.ShortUrlPath);
         }
 
         public bool IsValidUrl(string targetUrl)
@@ -47,13 +47,13 @@ namespace Shortr
                 }
 
                 // Unless whitelisted, can't create a short link to a shorten URL request link
-                if (uri.AbsoluteUri.StartsWith(_baseShortenUrl, StringComparison.InvariantCultureIgnoreCase))
+                if (_baseShortenUrl.IsBaseOf(uri))
                 {
                     return false;
                 }
 
                 // Unless whitelisted, can't create a short link to a short link
-                if (uri.AbsoluteUri.StartsWith(_baseShortUrl, StringComparison.InvariantCultureIgnoreCase))
+                if (_baseShortUrl.IsBaseOf(uri))
                 {
                     return false;
                 }

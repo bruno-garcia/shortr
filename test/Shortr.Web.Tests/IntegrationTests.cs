@@ -65,7 +65,37 @@ namespace Shortr.Web.Tests
         }
 
         [Fact]
-        public async Task Put_TargetUrlPartOfBaseAddress_BadRequest()
+        public async Task Put_TargetUrlPartOfBaseAddressWithShortPath_BadRequest()
+        {
+            _fixture.ShortrOptionsConfiguration = o => o.BaseAddress = new Uri("http://nugt.net");
+            var options = _fixture.Provider.GetRequiredService<IOptions<ShortrOptions>>().Value;
+            var client = _fixture.GetClient();
+
+            const string longUrl = "http://nugt.net/s/some-short-url";
+            var shorten = $"/{options.ShortenUrlPath}?url={HttpUtility.UrlEncode(longUrl)}";
+
+            var response = await client.PutAsync(shorten, null);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task Put_TargetUrlPartOfBaseAddressWithShortenPath_BadRequest()
+        {
+            _fixture.ShortrOptionsConfiguration = o => o.BaseAddress = new Uri("http://nugt.net");
+            var options = _fixture.Provider.GetRequiredService<IOptions<ShortrOptions>>().Value;
+            var client = _fixture.GetClient();
+
+            const string longUrl = "http://nugt.net/shorten/some-short-url";
+            var shorten = $"/{options.ShortenUrlPath}?url={HttpUtility.UrlEncode(longUrl)}";
+
+            var response = await client.PutAsync(shorten, null);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task Put_TargetUrlPartOfBaseAddress_Created()
         {
             _fixture.ShortrOptionsConfiguration = o => o.BaseAddress = new Uri("http://nugt.net");
             var options = _fixture.Provider.GetRequiredService<IOptions<ShortrOptions>>().Value;
@@ -76,7 +106,7 @@ namespace Shortr.Web.Tests
 
             var response = await client.PutAsync(shorten, null);
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
         [Fact]

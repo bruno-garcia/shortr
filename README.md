@@ -7,7 +7,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9a5ba18bcceb4dcfbb9fffd2fcd2196d)](https://www.codacy.com/manual/bruno-garcia/shortr?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bruno-garcia/shortr&amp;utm_campaign=Badge_Grade)
 
 ## A .NET Library for URL shortening and request redirection
-This project can create short URLs (i.e: [https://nugt.net/s/FqJFMC2](https://nugt.net/s/FqJFMC2])) and redirect requests to the original URL.
+This project can create short URLs (i.e: [https://nugt.net/s/FqJFMC2](https://nugt.net/s/FqJFMC2)) and redirect requests to the original URL.
 
 You can see it in use [in the NuGetTrends source code](https://github.com/NuGetTrends/nuget-trends).
 

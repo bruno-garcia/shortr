@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <Description>Postgres persistance for shortened URLs.</Description>
   </PropertyGroup>
 
   <ItemGroup>

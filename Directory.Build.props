@@ -1,6 +1,15 @@
 <Project>
   <PropertyGroup>
     <Version>1.0.0-beta01</Version>
+    <Authors>Bruno Garcia</Authors>
+    <PackageTags>url;shortening;tiny-url</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryRoot>$(MSBuildThisFileDirectory)</RepositoryRoot>
+    <RepositoryUrl>https://github.com/bruno-garcia/shortr</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/bruno-garcia/shortr</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/bruno-garcia/shortr/master/.github/shortr.png</PackageIconUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReleaseNotes>Can be found at: https://github.com/bruno-garcia/shortr/releases</PackageReleaseNotes>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
